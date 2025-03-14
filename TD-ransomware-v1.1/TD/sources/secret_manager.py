@@ -29,18 +29,14 @@ class SecretManager:
 
     def do_derivation(self, salt:bytes, key:bytes)->bytes:
         # derive
-        kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=1_200_000,)
-        key = kdf.derive(b"my great password")
-        # verify
-        kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=1_200_000,)
-        kdf.verify(b"my great password", key)
-
-        return key
-
+        kdf= PBKDF2HMAC(algorithm=hashes.SHA256(),length=self.KEY_LENGTH,salt=salt,iterations=self.ITERATION,)
+        return kdf.derive(key)
 
     def create(self)->Tuple[bytes, bytes, bytes]:
-        return secrets.token_bytes(nbytes=3)
-
+        salt = secrets.token_bytes(nbytes=self.SALT_LENGTH)
+        key = secrets.token_bytes(nbytes=self.KEY_LENGTH)
+        token=self.do_derivation(salt,key)
+        return salt,key,token
 
     def bin_to_b64(self, data:bytes)->str:
         tmp = base64.b64encode(data)
