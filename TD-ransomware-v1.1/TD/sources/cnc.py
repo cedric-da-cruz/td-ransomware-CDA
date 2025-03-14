@@ -29,8 +29,8 @@ class CNC(CNCBase):
         dir_path= os.path.join(self.ROOT_PATH, nom_dir)#on se place au /root/CNC
         os.makedirs(dir_path, exist_ok=True)
 
-        self.save_b64(token,salt,'salt.bin')#stockage du salt
-        self.save_b64(token,key,'key.bin')#stockage de la key
+        self.save_b64(nom_dir,salt,'salt.bin')#stockage du salt
+        self.save_b64(nom_dir,key,'key.bin')#stockage de la key
 
         return {"status":"KO"}
 
