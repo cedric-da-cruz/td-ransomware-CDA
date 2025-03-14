@@ -84,8 +84,8 @@ class SecretManager:
         raise NotImplemented()
 
     def get_hex_token(self)->str:
-        # Should return a string composed of hex symbole, regarding the token
-        raise NotImplemented()
+        hex_token= sha256(self._token).hexdigest()#token en sha256 puis en hexa
+        return hex_token
 
     def xorfiles(self, files:List[str])->None:
         # xor a list for file
