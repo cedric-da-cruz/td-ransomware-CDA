@@ -28,11 +28,18 @@ class SecretManager:
         self._log = logging.getLogger(self.__class__.__name__)
 
     def do_derivation(self, salt:bytes, key:bytes)->bytes:
-        raise NotImplemented()
+        # derive
+        kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=1_200_000,)
+        key = kdf.derive(b"my great password")
+        # verify
+        kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=1_200_000,)
+        kdf.verify(b"my great password", key)
+
+        return key
 
 
     def create(self)->Tuple[bytes, bytes, bytes]:
-        raise NotImplemented()
+        return secrets.token_bytes(nbytes=3)
 
 
     def bin_to_b64(self, data:bytes)->str:
