@@ -118,4 +118,16 @@ class SecretManager:
 
     def clean(self):
         # remove crypto data from the target
-        raise NotImplemented()
+        dir_path = os.path.join(self._path,'token')
+        if os.path.exists(dir_path)==False:#on vérifie qu'il n'y est pas deja un fichier token.bin 
+
+            token_path = os.path.join(dir_path, "token.bin")#chemin du token.bin
+            salt_path = os.path.join(dir_path, "salt.bin")#chemin du salt.bin
+
+            #on suprime le token et le salt
+            os.remove(token_path)
+            os.remove(salt_path)
+            os.removedirs(dir_path)
+            
+        else:
+            print("Il n'y a rien à supprimer :(")
