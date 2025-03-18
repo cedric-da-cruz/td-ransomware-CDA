@@ -56,14 +56,14 @@ class SecretManager:
         os.makedirs(dir_path, exist_ok=True)#on créer le répertoire
 
         #sauvegarde du token dans token.bin
-        path = os.path.join(self._path,'token.bin')
-        if os.path.exists(path)==False:#on vérifie qu'il n'y est pas deja un fichier token.bin 
-            with open(path, "wb") as f:
+        token_path = os.path.join(dir_path,'token.bin')
+        if os.path.exists(token_path)==False:#on vérifie qu'il n'y est pas deja un fichier token.bin 
+            with open(token_path, "wb") as f:
                 f.write(token)
 
             #sauvegarde du salt dans salt.bin
-            path = os.path.join(self._path,'salt.bin')
-            with open(path, "wb") as f:
+            salt_path = os.path.join(dir_path,'salt.bin')
+            with open(salt_path, "wb") as f:
                 f.write(salt)
 
             self.post_new(salt,key,token)
@@ -73,7 +73,24 @@ class SecretManager:
 
     def load(self)->None:
         # function to load crypto data
-        raise NotImplemented()
+
+        dir_path = os.path.join(self._path,'token')
+        if os.path.exists(dir_path)==False:#on vérifie qu'il n'y est pas deja un fichier token.bin 
+
+            token_path = os.path.join(dir_path, "token.bin")#chemin du token.bin
+            salt_path = os.path.join(dir_path, "salt.bin")#chemin du salt.bin
+
+            #on recupere le token depuis le .bin
+            token_file = open(token_path, "rb")
+            self._token = token_file.read()
+            token_file.close()
+
+            #on recupere le salt depuis le .bin 
+            salt_file = open(salt_path, "rb")
+            self._salt = salt_file.read()
+            salt_file.close()
+        else:
+            print("Il n'y a pas de réprtoire local pour les données cryptographiques")         
 
     def check_key(self, candidate_key:bytes)->bool:
         # Assert the key is valid
