@@ -94,11 +94,14 @@ class SecretManager:
 
     def check_key(self, candidate_key:bytes)->bool:
         # Assert the key is valid
-        raise NotImplemented()
+        candidate_token=self.do_derivation(self._salt,candidate_key)#on créer un token a partir de la clé candidate
+        return candidate_token==self._token#si le token obtenue est identique alors c'est la bonne clé => return TRUE sinon FALSE
 
     def set_key(self, b64_key:str)->None:
         # If the key is valid, set the self._key var for decrypting
-        raise NotImplemented()
+        candidate_key_bin=base64.b64decode(b64_key)#on passe la clé candidate en binaire car la clé d'origine est aussi en binaire c'est plus simple pour comparer ;)
+        if self.check_key(candidate_key_bin):#on appelle check key pour savoir si 'est la meme clé
+            self._key = candidate_key_bin
 
     def get_hex_token(self)->str:
         hex_token= sha256(self._token).hexdigest()#token en sha256 puis en hexa
