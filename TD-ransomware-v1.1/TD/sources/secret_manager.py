@@ -95,7 +95,8 @@ class SecretManager:
     def check_key(self, candidate_key:bytes)->bool:
         # Assert the key is valid
         candidate_token=self.do_derivation(self._salt,candidate_key)#on créer un token a partir de la clé candidate
-        return candidate_token==self._token#si le token obtenue est identique alors c'est la bonne clé => return TRUE sinon FALSE
+        if candidate_token==self._token:#si le token obtenue est identique alors c'est la bonne clé => return TRUE sinon exception
+            return True
 
     def set_key(self, b64_key:str)->None:
         # If the key is valid, set the self._key var for decrypting
